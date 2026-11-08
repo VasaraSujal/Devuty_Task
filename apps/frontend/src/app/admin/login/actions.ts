@@ -1,0 +1,1 @@
+// This file is no longer used - login is handled client-side now
