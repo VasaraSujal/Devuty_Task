@@ -16,10 +16,11 @@
 
 | Requirement | Details & Links |
 | :--- | :--- |
-| **Requirement 1: Live Demo** | [Explore Live Deployment](#-deployment-guide) *(Frontend on Vercel & Backend on Render)* |
+| **Requirement 1: Live Demo** | [https://devuty-task.vercel.app](https://devuty-task.vercel.app) *(Frontend on Vercel & Backend on Render)* |
 | **Requirement 1: Video Walkthrough** | [Watch Video Walkthrough](#) *(Full feature walkthrough: UI, animations, blog, admin CMS)* |
 | **Requirement 2: GitHub Repository** | [`https://github.com/VasaraSujal/Devuty_Task`](https://github.com/VasaraSujal/Devuty_Task) |
-| **Backend API Documentation** | `http://localhost:5000/api-docs` *(Interactive OpenAPI / Swagger UI)* |
+| **Backend API Service** | [https://devuty-task-backend.onrender.com](https://devuty-task-backend.onrender.com) |
+| **Backend API Documentation** | [https://devuty-task-backend.onrender.com/api/v1/docs/](https://devuty-task-backend.onrender.com/api/v1/docs/) *(OpenAPI / Swagger UI)* |
 
 ---
 
