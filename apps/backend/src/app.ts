@@ -39,6 +39,17 @@ app.use(cookieParser());
 app.use(csrfTokenMiddleware);
 app.use(csrfProtection);
 
+app.get('/', (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    name: 'Tactyqal Labs Blog API',
+    version: '1.0.0',
+    status: 'ONLINE',
+    docs: '/api-docs',
+    health: '/api/v1/health',
+  });
+});
+
 app.get('/api/v1/health', (_req: Request, res: Response) => {
   res.json({ success: true, message: 'OK', timestamp: new Date().toISOString() });
 });
