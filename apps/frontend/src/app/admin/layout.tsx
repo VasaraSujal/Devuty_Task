@@ -32,7 +32,7 @@ export default function AdminLayout({
     <AuthProvider>
       <ProtectedLayout>
         <div className="flex h-screen text-white overflow-hidden">
-          <AdminSidebar />
+          <AdminSidebar className="hidden lg:flex shrink-0" />
           <div className="flex flex-col flex-1 overflow-hidden min-w-0">
             <AdminHeader />
             <main className="flex-1 overflow-y-auto min-w-0 p-4 sm:p-6 lg:p-8">
