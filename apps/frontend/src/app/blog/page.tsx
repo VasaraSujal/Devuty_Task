@@ -81,34 +81,63 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     <div className="py-12 sm:py-16 lg:py-24 text-white">
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
-        {/* Editorial Publication Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xs text-xs font-mono uppercase tracking-wider bg-[#FF5E14]/10 border border-[#FF5E14]/30 text-[#FF5E14]">
-            <Sparkles className="w-3.5 h-3.5" />
-            Tactyqal Insights &amp; Founder Stories
+        {/* Editorial Publication Header with Cyber Telemetry Framing */}
+        <div className="relative p-8 sm:p-12 rounded-md bg-[#111116] border border-white/10 shadow-2xl overflow-hidden max-w-4xl mx-auto text-center space-y-6">
+          {/* Subtle Background Stationary Telemetry Dial */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+            <svg className="w-[500px] h-[500px]" viewBox="0 0 500 500" fill="none">
+              <circle cx="250" cy="250" r="230" stroke="#FF5E14" strokeWidth="1" strokeDasharray="4 8" />
+              <circle cx="250" cy="250" r="170" stroke="white" strokeWidth="0.5" strokeOpacity="0.4" />
+              <circle cx="250" cy="250" r="110" stroke="#FF5E14" strokeWidth="1" strokeOpacity="0.6" />
+              <line x1="250" y1="20" x2="250" y2="480" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
+              <line x1="20" y1="250" x2="480" y2="250" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
+            </svg>
           </div>
-          
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold tracking-tight text-white leading-[1.15]">
-            Ideas, Blueprints, &amp; Stories on <span className="text-[#FF5E14]">Building the Future</span>
-          </h1>
 
-          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed max-w-2xl mx-auto">
-            Practical guides for parents, aspiring teenage founders, and mentors on shipping real software, mastering no-code tools, and creating collegiate distinction.
-          </p>
+          {/* Corner Crosshairs */}
+          <div className="absolute top-2 left-2 font-mono text-[10px] text-zinc-600 select-none">+</div>
+          <div className="absolute top-2 right-2 font-mono text-[10px] text-zinc-600 select-none">+</div>
+          <div className="absolute bottom-2 left-2 font-mono text-[10px] text-zinc-600 select-none">+</div>
+          <div className="absolute bottom-2 right-2 font-mono text-[10px] text-zinc-600 select-none">+</div>
 
-          {/* Search bar */}
-          <form method="GET" action="/blog" className="pt-2 max-w-md mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-              <input
-                type="search"
-                name="q"
-                defaultValue={searchQuery}
-                placeholder="Search articles on MVPs, admissions, no-code..."
-                className="w-full pl-10 pr-4 h-11 rounded-md border border-white/10 bg-[#121217] text-white shadow-sm text-sm focus:outline-none focus:ring-1 focus:ring-[#FF5E14] focus:border-[#FF5E14]"
-              />
+          {/* Telemetry Coordinate Badges */}
+          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 border-b border-white/10 pb-3">
+            <span className="flex items-center gap-1.5 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5E14] animate-pulse" />
+              SYS_STREAM // EDITORIAL_FEED
+            </span>
+            <span className="hidden sm:inline text-zinc-400">DISPATCH_NODE // 28.6139°N</span>
+            <span className="text-zinc-400">ARCHIVE // V2.4</span>
+          </div>
+
+          <div className="relative z-10 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xs text-xs font-mono uppercase tracking-wider bg-[#FF5E14]/10 border border-[#FF5E14]/30 text-[#FF5E14]">
+              <Sparkles className="w-3.5 h-3.5" />
+              Tactyqal Insights &amp; Founder Stories
             </div>
-          </form>
+            
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-white leading-[1.15]">
+              Ideas, Blueprints, &amp; Stories on <span className="text-[#FF5E14]">Building the Future</span>
+            </h1>
+
+            <p className="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-2xl mx-auto">
+              Practical guides for parents, aspiring teenage founders, and mentors on shipping real software, mastering no-code tools, and creating collegiate distinction.
+            </p>
+
+            {/* Search bar */}
+            <form method="GET" action="/blog" className="pt-2 max-w-md mx-auto">
+              <div className="relative">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={searchQuery}
+                  placeholder="Search articles on MVPs, admissions, no-code..."
+                  className="w-full pl-10 pr-4 h-11 rounded-md border border-white/10 bg-[#16161D] text-white shadow-sm text-sm focus:outline-none focus:ring-1 focus:ring-[#FF5E14] focus:border-[#FF5E14] placeholder:text-zinc-500 font-sans"
+                />
+              </div>
+            </form>
+          </div>
         </div>
 
         {/* Category Filter Pills */}
