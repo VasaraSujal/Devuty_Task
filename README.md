@@ -17,7 +17,7 @@
 | Requirement | Details & Links |
 | :--- | :--- |
 | **Requirement 1: Live Demo** | [https://devuty-task.vercel.app](https://devuty-task.vercel.app) *(Frontend on Vercel & Backend on Render)* |
-| **Requirement 1: Video Walkthrough** | [Watch Video Walkthrough](#) *(Full feature walkthrough: UI, animations, blog, admin CMS)* |
+| **Requirement 1: Video Walkthrough** | [https://www.loom.com/share/b5305616feb74eb2beb5a662b2f0a466](https://www.loom.com/share/b5305616feb74eb2beb5a662b2f0a466) *(Full feature walkthrough: UI, animations, blog, admin CMS)* |
 | **Requirement 2: GitHub Repository** | [`https://github.com/VasaraSujal/Devuty_Task`](https://github.com/VasaraSujal/Devuty_Task) |
 | **Backend API Service** | [https://devuty-task-backend.onrender.com](https://devuty-task-backend.onrender.com) |
 | **Backend API Documentation** | [https://devuty-task-backend.onrender.com/api/v1/docs/](https://devuty-task-backend.onrender.com/api/v1/docs/) *(OpenAPI / Swagger UI)* |
