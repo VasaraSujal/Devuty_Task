@@ -25,11 +25,12 @@ export const errorHandler = (
   console.error('Error:', err);
 
   if (err instanceof ZodError) {
+    const firstErrorMessage = err.errors[0]?.message;
     return res.status(400).json({
       success: false,
       error: {
         code: 'VALIDATION_ERROR',
-        message: 'Invalid request payload',
+        message: firstErrorMessage || 'Invalid request payload',
         details: err.errors.map((e) => ({
           field: e.path.join('.'),
           message: e.message,

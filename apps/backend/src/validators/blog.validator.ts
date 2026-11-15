@@ -3,10 +3,10 @@ import { z } from 'zod';
 // Post validators
 export const createPostSchema = z.object({
   body: z.object({
-    title: z.string().min(5, 'Title must be at least 5 characters').max(255),
-    slug: z.string().min(3).max(280).optional(),
+    title: z.string().min(2, 'Title must be at least 2 characters').max(255),
+    slug: z.string().min(2).max(280).optional(),
     excerpt: z.string().max(500).optional(),
-    content: z.string().min(50, 'Content must be at least 50 characters'),
+    content: z.string().min(5, 'Content must be at least 5 characters'),
     coverImage: z.string().url().optional().or(z.literal('')),
     status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']).default('DRAFT'),
     categoryId: z.string().uuid('Invalid category ID'),
@@ -24,10 +24,10 @@ export const updatePostSchema = z.object({
     id: z.string().uuid('Invalid post ID'),
   }),
   body: z.object({
-    title: z.string().min(5).max(255).optional(),
-    slug: z.string().min(3).max(280).optional(),
+    title: z.string().min(2).max(255).optional(),
+    slug: z.string().min(2).max(280).optional(),
     excerpt: z.string().max(500).optional(),
-    content: z.string().min(50).optional(),
+    content: z.string().min(5).optional(),
     coverImage: z.string().url().optional().or(z.literal('')),
     status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']).optional(),
     categoryId: z.string().uuid().optional(),
