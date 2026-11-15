@@ -24,13 +24,31 @@ export const csrfProtection = (req: Request, res: Response, next: NextFunction) 
       return next();
     }
 
-    // Check for CSRF token in header
     const csrfToken = req.headers[CSRF_HEADER] as string;
     const csrfCookie = req.cookies?.[CSRF_COOKIE];
 
-    if (!csrfToken || !csrfCookie || csrfToken !== csrfCookie) {
-      return next(new AppError('Invalid CSRF token', 403, 'CSRF_INVALID'));
+    // If double-submit token is provided and matches, pass
+    if (csrfToken && csrfCookie && csrfToken === csrfCookie) {
+      return next();
     }
+
+    // In cross-origin deployments (e.g. Vercel frontend -> Render backend),
+    // browser Same-Origin Policy prevents JavaScript on vercel.app from reading document.cookie of onrender.com.
+    // Validate Origin/Referer against allowed domains:
+    const origin = req.headers.origin || req.headers.referer;
+    if (origin) {
+      const cleanOrigin = origin.replace(/\/+$/, '');
+      if (
+        cleanOrigin.includes('vercel.app') ||
+        cleanOrigin.includes('localhost') ||
+        cleanOrigin.includes('127.0.0.1') ||
+        cleanOrigin.includes(config.CORS_ORIGIN.replace(/\/+$/, ''))
+      ) {
+        return next();
+      }
+    }
+
+    return next(new AppError('Invalid CSRF token', 403, 'CSRF_INVALID'));
   }
 
   next();
