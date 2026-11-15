@@ -32,17 +32,31 @@ export default function AdminLoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking');
 
-  // Check backend health on mount
+  // Check backend health on mount and auto-retry if waking up from free-tier sleep
   useEffect(() => {
     let isMounted = true;
-    apiClient.health()
-      .then(() => {
-        if (isMounted) setApiStatus('online');
-      })
-      .catch(() => {
-        if (isMounted) setApiStatus('offline');
-      });
-    return () => { isMounted = false; };
+    let retryTimer: NodeJS.Timeout;
+
+    const checkHealth = () => {
+      apiClient.health()
+        .then(() => {
+          if (isMounted) setApiStatus('online');
+        })
+        .catch(() => {
+          if (isMounted) {
+            setApiStatus('offline');
+            // Auto retry every 4 seconds to catch Render waking up
+            retryTimer = setTimeout(checkHealth, 4000);
+          }
+        });
+    };
+
+    checkHealth();
+
+    return () => {
+      isMounted = false;
+      clearTimeout(retryTimer);
+    };
   }, []);
 
   // If already logged in, redirect to admin dashboard
@@ -68,7 +82,7 @@ export default function AdminLoginPage() {
     } catch (err: any) {
       console.error('Login error:', err);
       if (err.message && err.message.toLowerCase().includes('fetch')) {
-        setError('Cannot connect to Express backend API (http://localhost:5000). Please verify backend is running.');
+        setError('Cannot connect to backend API. If the free tier server was sleeping, it may take 30 seconds to wake up. Please retry shortly.');
       } else {
         setError(err.message || 'Invalid email or password. Please check your credentials.');
       }
@@ -162,19 +176,19 @@ export default function AdminLoginPage() {
               {apiStatus === 'checking' && (
                 <span className="inline-flex items-center gap-1.5 text-amber-400 font-medium">
                   <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" />
-                  Checking backend...
+                  Connecting...
                 </span>
               )}
               {apiStatus === 'online' && (
                 <span className="inline-flex items-center gap-1.5 text-emerald-400 font-medium">
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  Express API Online (:5000)
+                  API Online (Connected)
                 </span>
               )}
               {apiStatus === 'offline' && (
-                <span className="inline-flex items-center gap-1.5 text-rose-400 font-medium">
-                  <AlertCircle className="h-3.5 w-3.5" />
-                  Backend Offline (Start port 5000)
+                <span className="inline-flex items-center gap-1.5 text-amber-400 font-medium" title="Render free tier servers sleep after 15m of inactivity and take ~30s to wake up">
+                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                  Waking up server...
                 </span>
               )}
             </div>
