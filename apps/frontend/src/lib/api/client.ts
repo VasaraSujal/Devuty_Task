@@ -88,8 +88,9 @@ class ApiClient {
         // Ignore JSON parse errors
       }
 
+      const detailMsg = errorData.error?.details?.[0]?.message;
       const error: ApiError = new Error(
-        errorData.message || errorData.error?.message || 'An error occurred'
+        detailMsg || errorData.error?.message || errorData.message || 'An error occurred'
       ) as ApiError;
       error.status = response.status;
       error.code = errorData.error?.code || 'UNKNOWN_ERROR';
