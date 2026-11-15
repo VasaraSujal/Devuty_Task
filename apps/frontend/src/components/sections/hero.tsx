@@ -118,28 +118,28 @@ export function Hero() {
       {/* Subtle radial center vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070709_82%)] pointer-events-none" />
 
-      <div className="container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-7">
+      <div className="container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-7 max-w-full overflow-hidden">
         
         {/* Devuty Signature Framed Box Badge with Pulsing Live Status */}
-        <div className="inline-flex items-center justify-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-[#FF5E14] text-[#FF5E14] text-[11px] sm:text-xs font-mono uppercase tracking-[0.22em] rounded-xs bg-[#FF5E14]/5 shadow-[0_0_20px_rgba(255,94,20,0.25)] hover:bg-[#FF5E14]/10 transition-colors">
-            <span className="relative flex h-2 w-2">
+        <div className="inline-flex items-center justify-center max-w-full px-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 border border-[#FF5E14] text-[#FF5E14] text-[10px] sm:text-xs font-mono uppercase tracking-wider sm:tracking-[0.2em] rounded-xs bg-[#FF5E14]/5 shadow-[0_0_20px_rgba(255,94,20,0.25)] hover:bg-[#FF5E14]/10 transition-colors text-center max-w-full">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5E14] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5E14]"></span>
             </span>
-            <span>PROOF-OF-WORK BUILDER ACCELERATOR</span>
+            <span className="truncate sm:overflow-visible">PROOF-OF-WORK BUILDER ACCELERATOR</span>
           </div>
         </div>
 
         {/* Master Headline (Devuty Two-Tone Format) */}
-        <div className="space-y-1 sm:space-y-2">
+        <div className="space-y-1 sm:space-y-2 max-w-full px-2">
           <h1 
             id="hero-headline"
-            className="text-3xl sm:text-5xl lg:text-6xl font-heading font-extrabold tracking-tight text-white leading-[1.15] drop-shadow-sm"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold tracking-tight text-white leading-[1.2] drop-shadow-sm break-words"
           >
             Solve real problems. Build real software.
           </h1>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black tracking-tight text-[#FF5E14] uppercase leading-[1.15] drop-shadow-[0_0_35px_rgba(255,94,20,0.35)]">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight text-[#FF5E14] uppercase leading-[1.2] drop-shadow-[0_0_35px_rgba(255,94,20,0.35)] break-words">
             BUILD YOUR FIRST APP.
           </h2>
         </div>

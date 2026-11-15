@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
-      <body className="min-h-screen bg-[#070709] text-foreground antialiased selection:bg-[#FF5E14]/30 selection:text-[#FF5E14] font-sans relative overflow-x-hidden">
+    <html lang="en" className={`${inter.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} scroll-smooth overflow-x-hidden max-w-full`} suppressHydrationWarning>
+      <body className="min-h-screen bg-[#070709] text-foreground antialiased selection:bg-[#FF5E14]/30 selection:text-[#FF5E14] font-sans relative overflow-x-hidden max-w-full">
         {/* Global Cyber Blueprint Grid Pattern */}
         <div 
           className="fixed inset-0 bg-[linear-gradient(to_right,#ffffff07_1px,transparent_1px),linear-gradient(to_bottom,#ffffff07_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] pointer-events-none select-none z-0" 
@@ -45,7 +45,7 @@ export default function RootLayout({
           aria-hidden="true"
         />
 
-        <div className="relative z-10 flex min-h-screen flex-col">
+        <div className="relative z-10 flex min-h-screen flex-col overflow-x-hidden max-w-full">
           {children}
         </div>
       </body>
