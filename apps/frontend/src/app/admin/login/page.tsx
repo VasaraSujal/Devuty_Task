@@ -88,7 +88,37 @@ export default function AdminLoginPage() {
         className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,#000_40%,transparent_90%)] pointer-events-none" 
       />
 
+      {/* Subtle Stationary Background Concentric Dial */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+        <svg className="w-[850px] h-[850px]" viewBox="0 0 850 850" fill="none">
+          <circle cx="425" cy="425" r="410" stroke="#FF5E14" strokeWidth="1" strokeDasharray="6 10" />
+          <circle cx="425" cy="425" r="320" stroke="white" strokeWidth="0.5" strokeOpacity="0.3" />
+          <circle cx="425" cy="425" r="220" stroke="#FF5E14" strokeWidth="1" strokeOpacity="0.5" />
+          <line x1="425" y1="20" x2="425" y2="830" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" />
+          <line x1="20" y1="425" x2="830" y2="425" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" />
+        </svg>
+      </div>
+
+      {/* Outer Telemetry Coordinate Anchors */}
+      <div className="absolute top-6 left-6 font-mono text-[10px] text-zinc-600 select-none hidden md:block">
+        AUTH_GATEWAY // PORT_443
+      </div>
+      <div className="absolute top-6 right-6 font-mono text-[10px] text-zinc-600 select-none hidden md:block">
+        CIPHER // AES_256_GCM
+      </div>
+      <div className="absolute bottom-6 left-6 font-mono text-[10px] text-zinc-600 select-none hidden md:block">
+        SYS_STATUS // ACTIVE
+      </div>
+      <div className="absolute bottom-6 right-6 font-mono text-[10px] text-zinc-600 select-none hidden md:block">
+        LATENCY // &lt;15MS
+      </div>
+
       <div className="w-full max-w-5xl grid lg:grid-cols-12 bg-[#111116] border border-white/10 rounded-md shadow-2xl overflow-hidden relative z-10">
+        {/* Card Corner Crosshairs */}
+        <div className="absolute top-2 left-2 font-mono text-[10px] text-zinc-600 select-none z-20">+</div>
+        <div className="absolute top-2 right-2 font-mono text-[10px] text-zinc-600 select-none z-20">+</div>
+        <div className="absolute bottom-2 left-2 font-mono text-[10px] text-zinc-600 select-none z-20">+</div>
+        <div className="absolute bottom-2 right-2 font-mono text-[10px] text-zinc-600 select-none z-20">+</div>
         
         {/* Left Column — Brand & Vision */}
         <div className="lg:col-span-5 p-8 sm:p-12 bg-[#14141A] border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between relative overflow-hidden">
