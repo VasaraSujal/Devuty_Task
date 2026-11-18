@@ -45,6 +45,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         role: userData.role === 'ADMIN' ? 'ADMIN' : 'AUTHOR'
       });
     } catch (err) {
+      // If access token is expired or missing, attempt refresh once if refresh token is available
+      if (typeof window !== 'undefined' && localStorage.getItem('devuty_refresh_token')) {
+        try {
+          await apiClient.refresh();
+          const retryRes = await apiClient.me();
+          const retryData = retryRes.data;
+          setUser({
+            id: retryData.id,
+            email: retryData.email,
+            name: retryData.name,
+            role: retryData.role === 'ADMIN' ? 'ADMIN' : 'AUTHOR'
+          });
+          return;
+        } catch {
+          // Token refresh also failed
+        }
+      }
       // Not authenticated or session expired
       setUser(null);
     } finally {
