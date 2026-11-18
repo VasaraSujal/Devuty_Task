@@ -13,9 +13,13 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    // Get access token from cookie or Authorization header
-    const accessToken = req.cookies?.access_token ||
-      req.headers.authorization?.replace('Bearer ', '');
+    // Get access token from Authorization header or cookie
+    const authHeader = req.headers.authorization;
+    const bearerToken = authHeader && /^Bearer\s+/i.test(authHeader)
+      ? authHeader.replace(/^Bearer\s+/i, '').trim()
+      : undefined;
+
+    const accessToken = bearerToken || req.cookies?.access_token;
 
     if (!accessToken) {
       throw new AppError('Authentication required', 401, 'UNAUTHORIZED');

@@ -65,6 +65,7 @@ class ApiClient {
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      ...((options.headers as Record<string, string>) || {}),
     };
 
     // Add CSRF header if token is available
@@ -72,13 +73,33 @@ class ApiClient {
       headers[CSRF_HEADER_NAME] = csrfToken;
     }
 
+    // Attach Bearer token from localStorage for reliable cross-domain authentication
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('devuty_access_token');
+      if (storedToken && !headers['Authorization']) {
+        headers['Authorization'] = `Bearer ${storedToken}`;
+      }
+    }
+
     const defaults: RequestInit = {
       headers,
       credentials: 'include',
-      cache: 'no-store',
     };
 
-    const response = await fetch(url, { ...defaults, ...options });
+    let response: Response;
+    try {
+      response = await fetch(url, { ...defaults, ...options });
+    } catch (fetchErr: any) {
+      const isNetworkErr = fetchErr?.message?.toLowerCase().includes('fetch') || fetchErr?.name === 'TypeError';
+      const msg = isNetworkErr
+        ? 'Cannot reach backend service. The server may be waking up from sleep or experiencing network issues. Please retry in a few seconds.'
+        : fetchErr?.message || 'Network request failed';
+      const error: ApiError = new Error(msg) as ApiError;
+      error.status = 0;
+      error.code = 'NETWORK_ERROR';
+      error.name = 'NetworkError';
+      throw error;
+    }
 
     if (!response.ok) {
       let errorData: any = {};
@@ -105,17 +126,57 @@ class ApiClient {
   health = () => this.request<ApiResponse<{ timestamp: string }>>('/health');
 
   // Auth endpoints
-  login = (email: string, password: string) =>
-    this.request<ApiResponse<{ user: { id: string; email: string; name: string; role: string; avatar?: string | null; bio?: string | null } }>>('/auth/login', {
+  login = async (email: string, password: string) => {
+    const res = await this.request<ApiResponse<{
+      user: { id: string; email: string; name: string; role: string; avatar?: string | null; bio?: string | null };
+      accessToken?: string;
+      refreshToken?: string;
+    }>>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
 
-  logout = () =>
-    this.request<ApiResponse<{ message: string }>>('/auth/logout', { method: 'POST' });
+    if (res.data?.accessToken && typeof window !== 'undefined') {
+      localStorage.setItem('devuty_access_token', res.data.accessToken);
+      if (res.data.refreshToken) {
+        localStorage.setItem('devuty_refresh_token', res.data.refreshToken);
+      }
+    }
 
-  refresh = () =>
-    this.request<ApiResponse<{ message: string }>>('/auth/refresh', { method: 'POST' });
+    return res;
+  };
+
+  logout = async () => {
+    try {
+      return await this.request<ApiResponse<{ message: string }>>('/auth/logout', { method: 'POST' });
+    } finally {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('devuty_access_token');
+        localStorage.removeItem('devuty_refresh_token');
+      }
+    }
+  };
+
+  refresh = async () => {
+    const storedRefresh = typeof window !== 'undefined' ? localStorage.getItem('devuty_refresh_token') : null;
+    const res = await this.request<ApiResponse<{
+      user: { id: string; email: string; name: string; role: string };
+      accessToken?: string;
+      refreshToken?: string;
+    }>>('/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken: storedRefresh }),
+    });
+
+    if (res.data?.accessToken && typeof window !== 'undefined') {
+      localStorage.setItem('devuty_access_token', res.data.accessToken);
+      if (res.data.refreshToken) {
+        localStorage.setItem('devuty_refresh_token', res.data.refreshToken);
+      }
+    }
+
+    return res;
+  };
 
   me = () =>
     this.request<ApiResponse<{ id: string; email: string; name: string; role: string }>>(
