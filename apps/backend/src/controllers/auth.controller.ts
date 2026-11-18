@@ -13,7 +13,7 @@ const COOKIE_OPTIONS = {
 
 const ACCESS_COOKIE_OPTIONS = {
   ...COOKIE_OPTIONS,
-  maxAge: 15 * 60 * 1000, // 15 minutes
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
 const CLEAR_COOKIE_OPTIONS = {
@@ -40,8 +40,8 @@ export const authController = {
       message: 'Login successful',
       data: {
         user: result.user,
-        // Don't send tokens in response body when using cookies
-        // They are set as HTTP-only cookies
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
       },
     });
   },
@@ -68,6 +68,8 @@ export const authController = {
       message: 'Token refreshed',
       data: {
         user: result.user,
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
       },
     });
   },

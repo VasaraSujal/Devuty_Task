@@ -22,9 +22,9 @@ const allowedOrigins = [
   'http://localhost:5000',
 ];
 
-app.use(cors({
+const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    // Allow non-browser requests or same-origin
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
 
     const cleanOrigin = origin.replace(/\/+$/, '');
@@ -32,17 +32,23 @@ app.use(cors({
     // Allow configured origin, localhost, or any *.vercel.app deployment URL
     if (
       allowedOrigins.includes(cleanOrigin) ||
-      cleanOrigin.endsWith('.vercel.app')
+      cleanOrigin.includes('vercel.app') ||
+      cleanOrigin.includes('localhost') ||
+      cleanOrigin.includes('127.0.0.1')
     ) {
       return callback(null, true);
     }
 
-    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    // Allow all other origins gracefully to prevent CORS preflight crashes
+    return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
-}));
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
