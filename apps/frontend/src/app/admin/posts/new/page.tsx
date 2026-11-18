@@ -133,7 +133,16 @@ export default function NewPostPage() {
 
       router.push('/admin/posts');
     } catch (err: any) {
-      setError(err.message || 'Failed to save post to backend');
+      if (
+        err.status === 401 ||
+        err.code === 'UNAUTHORIZED' ||
+        err.message?.toLowerCase().includes('authentication') ||
+        err.message?.toLowerCase().includes('unauthorized')
+      ) {
+        setError('Your session has expired. Please sign in again at /admin/login (in a new tab) and then click Save & Publish.');
+      } else {
+        setError(err.message || 'Failed to save post to backend');
+      }
     } finally {
       setIsSaving(false);
     }

@@ -110,11 +110,14 @@ export class PostService {
     // Handle publishedAt
     const publishedAt = data.status === 'PUBLISHED' ? new Date() : null;
 
+    // Extract tagIds before passing to Prisma Post model
+    const { tagIds, ...postFields } = data;
+
     // Use transaction for post + tags
     const newPost = await prisma.$transaction(async (tx) => {
       const post = await tx.post.create({
         data: {
-          ...data,
+          ...postFields,
           slug: uniqueSlug,
           excerpt,
           publishedAt,
@@ -122,9 +125,9 @@ export class PostService {
       });
 
       // Create post-tag relationships
-      if (data.tagIds && data.tagIds.length > 0) {
+      if (tagIds && tagIds.length > 0) {
         await tx.postTag.createMany({
-          data: data.tagIds.map(tagId => ({
+          data: tagIds.map(tagId => ({
             postId: post.id,
             tagId,
           })),
@@ -378,26 +381,29 @@ export class PostService {
       }
     }
 
+    // Extract tagIds before passing to Prisma Post model
+    const { tagIds, ...postFields } = data;
+
     // Update in transaction
     const updated = await prisma.$transaction(async (tx) => {
       const post = await tx.post.update({
         where: { id },
         data: {
-          ...data,
+          ...postFields,
           slug,
           publishedAt,
         },
       });
 
       // Update tags if provided
-      if (data.tagIds) {
+      if (tagIds) {
         // Delete existing tags
         await tx.postTag.deleteMany({ where: { postId: id } });
 
         // Create new tags
-        if (data.tagIds.length > 0) {
+        if (tagIds.length > 0) {
           await tx.postTag.createMany({
-            data: data.tagIds.map(tagId => ({
+            data: tagIds.map(tagId => ({
               postId: id,
               tagId,
             })),
